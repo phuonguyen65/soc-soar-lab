@@ -1,6 +1,6 @@
 # Splunk Alerts — SPL Queries
 
-![alert-list](screenshots/splunk/alerts-list.png)
+![alert-list](./screenshots/splunk/alerts-list.png)
 
 ## S3 — SSH Brute Force
 
