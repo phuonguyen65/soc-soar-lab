@@ -32,7 +32,7 @@ alert tcp any any -> $HOME_NET any (msg:"SCAN Nmap Port Scan Detected"; flags:S;
 index=suricata sourcetype=syslog "Nmap Port Scan"
 ```
 
-> 📸 _[Screenshot: Splunk S1 result]_
+![Splunk S1 result](./../screenshots/splunk/s1-nmap-result.png)
 
 **Why no auto-block**: Too many false positives — legitimate scanners and security tools generate similar traffic patterns.
 
@@ -58,7 +58,7 @@ alert tcp any any -> $HOME_NET any (msg:"SCAN Low and Slow Port Scan"; flags:S; 
 index=suricata sourcetype=syslog "Low and Slow"
 ```
 
-> 📸 _[Screenshot: Splunk S2 result]_
+![Splunk S2 result](./../screenshots/splunk/s2-lowslow-result.png)
 
 ---
 
@@ -85,8 +85,9 @@ alert tcp any any -> $HOME_NET 22 (msg:"ATTACK SSH Brute Force Detected"; flow:t
 
 **SOAR Response**: Automatically creates TheHive case + Slack alert
 
-> 📸 _[Screenshot: TheHive case S3]_
-> 📸 _[Screenshot: Slack alert S3]_
+![TheHive case S3](./../screenshots/thehive/s3-brute-result.png)
+
+![Slack alert S3](./../screenshots/slack/s3-brute-result.png)
 
 ---
 
@@ -137,9 +138,11 @@ fi
 ssh -i /home/nvphuong/.ssh/pfsense_key root@192.168.1.1 "pfctl -t blocklist -T show"
 ```
 
-> 📸 _[Screenshot: Shuffle Tools 2 — Blocked 192.168.56.132]_
-> 📸 _[Screenshot: Slack alert S4 with attacker IP]_
-> 📸 _[Screenshot: TheHive case S4]_
+![Shuffle Tools 2 — Blocked 192.168.56.132](./../screenshots/shuffle/execution-success-block-ip.png)
+
+![Slack alert S4](./../screenshots/slack/s4-correlation-result.png)
+
+![TheHive case S4](./../screenshots/thehive/s4-correlation-result.png)
 
 **Note on pfSense block**: pfSense CE 2.8.1 does not include a REST API package. IP blocking is implemented via SSH + `pfctl` directly. The `blocklist` table must exist before the first block — it is created automatically on first use via `pfctl -t blocklist -T add`.
 
@@ -172,5 +175,7 @@ index=suricata sourcetype=syslog suricata
 
 **SOAR Response**: On TI match → immediately creates case + Slack notify with threat label (malicious/suspicious)
 
-> 📸 _[Screenshot: Splunk TI match result]_
-> 📸 _[Screenshot: Slack alert S5]_
+
+![Splunk TI match result](./../screenshots/splunk/s5-ti-match-result.png)
+
+![Slack alert S5](./../screenshots/slack/s5-ti-match-result.png)
