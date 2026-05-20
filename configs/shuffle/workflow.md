@@ -95,7 +95,7 @@ fi
 ```
 
 **Expected output:**
-- S4 trigger: `Blocked 192.168.56.132 on pfSense`
+- S4 trigger: `Blocked 192.168.56.132`
 - Other triggers: `Skipped - not S4`
 
 ![Shuffle workflow result](../../screenshots/shuffle/execution-success-block-ip.png)
