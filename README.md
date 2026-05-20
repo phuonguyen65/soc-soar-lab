@@ -53,7 +53,7 @@ Kali attacks → Suricata detects → Splunk alerts → Shuffle playbook → The
                     Apache + DVWA            (LAN)                  TheHive + Shuffle
 ```
 
-> 📸 _[Screenshot: Network diagram]_
+![Network Topology](screenshots/architecture/network-topology.png)
 
 ### VM Inventory
 
@@ -92,8 +92,6 @@ Kali attacks → Suricata detects → Splunk alerts → Shuffle playbook → The
 | 7 | Shuffle Tools 2 (S4 only): SSH into pfSense → block attacker IP | Shuffle + pfctl |
 | 8 | Analyst receives Slack notification, investigates on TheHive | TheHive 5.3 |
 
-> 📸 _[Screenshot: Shuffle workflow diagram]_
-
 ---
 
 ## ⚔️ Attack Scenarios
@@ -119,7 +117,7 @@ nmap -sS 192.168.56.130
 alert tcp any any -> $HOME_NET any (msg:"SCAN Nmap Port Scan Detected"; flags:S; threshold:type threshold,track by_src,count 20,seconds 10; classtype:network-scan; sid:9000002; rev:1;)
 ```
 
-> 📸 _[Screenshot: Splunk S1 result]_
+![s1-result](screenshots/splunk/s1-nmap-result.png)
 
 ---
 
@@ -134,7 +132,7 @@ nmap -T1 -sS 192.168.56.130
 alert tcp any any -> $HOME_NET any (msg:"SCAN Low and Slow Port Scan"; flags:S; threshold:type threshold,track by_src,count 5,seconds 60; classtype:network-scan; sid:9000003; rev:1;)
 ```
 
-> 📸 _[Screenshot: Splunk S2 result]_
+![s2-result](screenshots/splunk/s2-lowslow-result.png)
 
 ---
 
@@ -154,7 +152,11 @@ alert tcp any any -> $HOME_NET 22 (msg:"ATTACK SSH Brute Force Detected"; flow:t
 index=suricata sourcetype=syslog suricata AND "SSH Brute Force"
 ```
 
-> 📸 _[Screenshot: TheHive case S3 + Slack alert]_
+![s3-result-splunk](screenshots/splunk/s3-brute-result.png)
+
+![s3-result-slack](screenshots/slack/s3-brute-result.png)
+
+![s3-result-thehive](screenshots/thehive/s3-brute-result.png)
 
 ---
 
@@ -173,6 +175,12 @@ index=suricata sourcetype=syslog suricata earliest=-5m
 | eval description="Multi-stage attack from ".src_ip." (".alert_count." events in 5 min)"
 ```
 
+![s4-result-splunk](screenshots/splunk/s4-correlation-result.png)
+
+![s4-result-slack](screenshots/slack/s4-correlation-result.png)
+
+![s4-result-thehive](screenshots/thehive/s4-correlation-result.png)
+
 **SOAR Auto-block:**  
 Shuffle extracts src_ip from description → SSH into pfSense → adds IP to `blocklist` table via `pfctl`
 
@@ -187,8 +195,9 @@ if echo "$exec.search_name" | grep -q "S4"; then
 fi
 ```
 
-> 📸 _[Screenshot: Shuffle Tools 2 — Blocked 192.168.56.132]_
-> 📸 _[Screenshot: Slack alert S4 with attacker IP]_
+![s4-result-shufle-soar](screenshots/shuffle/execution-success-block-ip.png)
+
+![s4-result-block-ip](screenshots/success-block-ip.png)
 
 ---
 
@@ -211,7 +220,11 @@ index=suricata sourcetype=syslog suricata
 | table _time src_ip threat description
 ```
 
-> 📸 _[Screenshot: Splunk TI match result]_
+![s4-result-splunk](screenshots/splunk/s5-ti-match-result.png)
+
+![s4-result-slack](screenshots/slack/s5-ti-match-result.png)
+
+![s4-result-thehive](screenshots/thehive/s5-ti-match-result.png)
 
 ---
 
@@ -230,7 +243,7 @@ Shuffle Tools 2 — Execute Bash (S4 only)
         └── SSH → pfSense: pfctl -t blocklist -T add <src_ip>
 ```
 
-> 📸 _[Screenshot: Shuffle workflow canvas with 2 nodes]_
+![workflow](screenshots/shuffle/workflow-canvas.png)
 
 ---
 
@@ -242,7 +255,7 @@ Shuffle Tools 2 — Execute Bash (S4 only)
 - **Attack Type Breakdown** — pie chart by alert category
 - **Recent Alerts** — table with src_ip, alert_msg, priority
 
-> 📸 _[Screenshot: Full Kill Chain Dashboard]_
+![splunk dasboard](screenshots/splunk/dashboard-overview.png)
 
 ---
 
