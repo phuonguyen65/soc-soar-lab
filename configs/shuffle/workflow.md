@@ -15,7 +15,7 @@
                             └── SSH → pfSense: pfctl -t blocklist -T add <src_ip>
 ```
 
-> 📸 _[Screenshot: Shuffle workflow canvas with 2 nodes]_
+![Shuffle workflow](../../screenshots/shuffle/workflow-canvas.png)
 
 ---
 
@@ -98,7 +98,7 @@ fi
 - S4 trigger: `Blocked 192.168.56.132 on pfSense`
 - Other triggers: `Skipped - not S4`
 
-> 📸 _[Screenshot: Shuffle Tools 2 result — Blocked 192.168.56.132]_
+![Shuffle workflow result](../../screenshots/shuffle/execution-success-block-ip.png)
 
 **Verify block on pfSense:**
 ```bash
@@ -127,8 +127,6 @@ ssh -i /home/nvphuong/.ssh/pfsense_key root@192.168.1.1 "pfctl -t blocklist -T s
 | severity | 2 (MEDIUM) | Severity level |
 | tags | suricata, automated, splunk | Filter tags |
 
-> 📸 _[Screenshot: TheHive alert list]_
-> 📸 _[Screenshot: TheHive case detail]_
 
 ---
 
@@ -143,7 +141,7 @@ Detail: Multi-stage attack from 192.168.56.132 (574 events in 5 min)
 Time: Sun May 17 17:13:25 CEST 2026
 ```
 
-> 📸 _[Screenshot: Slack notifications]_
+![S4 Slack](../../screenshots/slack/s4-correlation-result.png)
 
 ---
 
